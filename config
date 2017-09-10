@@ -1,0 +1,72 @@
+http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
+
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
+
+
+export JAVA_HOME=/usr/java/jdk1.8.0_131
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+
+
+https://downloads.lightbend.com/scala/2.12.2/scala-2.12.2.tgz
+
+
+stop firewalld
+systemctl stop firewalld 
+开机自动关闭：
+systemctl disable firewalld
+临时关闭selinux
+setenforce 0
+永久关闭
+vim /etc/selinux/config    修改为disable 或者permissive
+
+
+
+export SCALA_HOME=/usr/scala/scala-2.12.2
+export PATH=$PATH:$SCALA_HOME/bin
+
+
+
+mvn -T 2.0C -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.0 -Phive -Phive-thriftserver -DskipTests package
+
+    <proxy>
+      <id>optional</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <username>proxyuser</username>
+      <password>proxypass</password>
+      <host>10.239.4.160</host>
+      <port>913</port>
+      <nonProxyHosts>local.net|some.host.com</nonProxyHosts>
+    </proxy>
+ 
+
+
+./bin/spark-submit \
+  --class SimpleApp \
+  --master spark://zyh.novalocal:7077 \
+  /home/zyh/sparkapp/target/zyh-1.0.jar
+
+
+./bin/spark-submit  --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.2.0   --class org.apache.spark.examples.sql.streaming.StructuredKafkaWordCount   --master spark://zyh:7077   /home/zyh/spark/examples/target/scala-2.11/jars/spark-examples_2.11-2.3.0-SNAPSHOT.jar localhost:9092 subscribe test
+
+
+./bin/spark-submit   --class org.apache.spark.examples.SparkPi   --master spark://sr491:7077   /home/zyh/spark/examples/target/scala-2.11/jars/spark-examples_2.11-2.3.0-SNAPSHOT.jar 1000
+
+./bin/spark-submit  --class StructuredSession  --master spark://sr491:7077  /home/zyh/sskafka/target/vishop-1.0-jar-with-dependencies.jar localhost:9092 subscribe test
+
+./bin/spark-submit  --class StructuredSessionization  --master spark://sr491:7077  /home/zyh/SparkCases/flatmap/target/StructuredSession-1.0-jar-with-dependencies.jar localhost:9092 subscribe test
+
+systemctl reboot -i
+
+
+
+./bin/spark-submit   --class Test   --master spark://zyh.novalocal:7077   /home/zyh/wc_noop/target/zyh-1.0.jar
+
+
+
+mvn -T 16 -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.0 -Phive -Phive-thriftserver -DskipTests clean install
+
+
+g++ -o ftrl test_ftrl.cc -I./ps-lite/include ps-lite/build/libps.a -L./ps-lite/deps/lib/ -lprotobuf-lite -lzmq -std=c++11
